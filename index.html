@@ -597,7 +597,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);}
     <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:13px;color:#856404;line-height:1.6;">
       📧 <strong>Wichtig nach der Bestellung:</strong> Du bekommst eine Bestätigungs-E-Mail von Ringana. Bitte schau auch in deinen <strong>Spam-Ordner</strong>! Erst nach der Bestätigung kannst du als Kundin angelegt werden.
     </div>
-    <button class="btn-submit" id="btnSubmit" onclick="submitForm()">Bestellung absenden →</button>
+    <button class="btn-submit" id="btnSubmit" onclick="submitForm()">💬 Per WhatsApp senden →</button>
 
     <div class="or-divider">oder</div>
 
@@ -858,29 +858,31 @@ function chkForm(){
   btn.classList.toggle('ready', ok);
 }
 
+// Deine WhatsApp-Nummer im internationalen Format, ohne Leerzeichen, ohne führende Null.
+var WHATSAPP_NUMMER = '4369911100513';
+
 // ── Form submit ───────────────────────────────────────────────────────────────
-async function submitForm(){
-  var paket = {name: (selectedPakete.length ? selectedPakete.map(function(p){return p.name;}).join(' + ') : 'nicht gewählt'), preis: selectedPakete.map(function(p){return p.preis;}).join(' + ')};
-  var data = {
-    _subject: 'Neue Darmkur-Bestellung: ' + paket.name,
-    paket: paket.name + ' · ' + paket.preis + ' · ' + paket.dauer,
-    vorname: document.getElementById('fVorname').value,
-    nachname: document.getElementById('fNachname').value,
-    email: document.getElementById('fEmail').value,
-    telefon: document.getElementById('fTel').value || 'nicht angegeben',
-    strasse: document.getElementById('fStrasse').value,
-    plz: document.getElementById('fPlz').value,
-    ort: document.getElementById('fOrt').value,
-    geburtsdatum: document.getElementById('fGeb').value,
-    anmerkungen: document.getElementById('fNote').value || 'keine'
-  };
-  try{
-    await fetch('https://formspree.io/f/mojoondj', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(data)
-    });
-  } catch(e){}
+function submitForm(){
+  var paketName = selectedPakete.length ? selectedPakete.map(function(p){return p.name;}).join(' + ') : 'nicht gewählt';
+  var paketPreis = selectedPakete.map(function(p){return p.preis;}).join(' + ');
+
+  var lines = [
+    'Hallo Sarah! 🌿 Ich möchte gerne die Darmkur bestellen.',
+    '',
+    'Paket: ' + paketName,
+    'Preis: ' + paketPreis,
+    '',
+    'Vorname: ' + document.getElementById('fVorname').value,
+    'Nachname: ' + document.getElementById('fNachname').value,
+    'E-Mail: ' + document.getElementById('fEmail').value,
+    'Telefon: ' + (document.getElementById('fTel').value || 'nicht angegeben'),
+    'Adresse: ' + document.getElementById('fStrasse').value + ', ' + document.getElementById('fPlz').value + ' ' + document.getElementById('fOrt').value,
+    'Geburtsdatum: ' + document.getElementById('fGeb').value,
+    'Anmerkungen: ' + (document.getElementById('fNote').value || 'keine')
+  ];
+  var text = lines.join('\n');
+  var url = 'https://wa.me/' + WHATSAPP_NUMMER + '?text=' + encodeURIComponent(text);
+  window.open(url, '_blank');
   go('s4');
 }
 
