@@ -43,7 +43,10 @@ Antworte NUR als valides JSON in diesem Format, ohne Markdown, ohne Erklärungen
     }
 
     const data = await response.json();
-    const rawText = data.content && data.content[0] && data.content[0].text ? data.content[0].text : '';
+    let rawText = data.content && data.content[0] && data.content[0].text ? data.content[0].text : '';
+
+    // Sicherheitsnetz: Markdown-Codeblock-Zeichen entfernen, falls die KI sie trotz Anweisung mitschickt
+    rawText = rawText.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
 
     let result;
     try {
