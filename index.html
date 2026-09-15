@@ -175,6 +175,29 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);}
 .btn-next{background:linear-gradient(135deg,var(--green-m),var(--green-d));color:white;border:none;border-radius:99px;padding:14px 28px;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(45,90,39,.28);transition:all .2s;opacity:.35;pointer-events:none;}
 .btn-next.ready{opacity:1;pointer-events:all;}
 .btn-next.ready:hover{transform:translateY(-2px);}
+
+.mini-quiz{background:var(--white);border:1.5px solid var(--line);border-radius:20px;padding:22px 20px;margin-top:16px;text-align:left;}
+.mini-quiz-title{font-family:"Lora",serif;font-size:18px;color:var(--green-d);margin-bottom:4px;}
+.mini-quiz-sub{font-size:12.5px;color:var(--text-l);margin-bottom:16px;}
+.mq-question{display:none;}
+.mq-question.active{display:block;}
+.mq-question-text{font-size:14px;color:var(--text);font-weight:500;margin-bottom:12px;}
+.mq-opt{display:block;width:100%;text-align:left;background:var(--beige);border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:8px;font-family:"DM Sans",sans-serif;font-size:13.5px;color:var(--text);cursor:pointer;transition:all .2s;}
+.mq-opt:hover{border-color:var(--green-l);background:var(--green-soft);}
+.mq-progress{display:flex;gap:5px;margin-bottom:16px;}
+.mq-dot{flex:1;height:3px;border-radius:99px;background:var(--line);}
+.mq-dot.on{background:var(--green-m);}
+.mq-result{display:none;text-align:center;}
+.mq-result.active{display:block;}
+.mq-result-text{font-size:14px;color:var(--text-m);line-height:1.7;margin-bottom:16px;font-weight:300;}
+.mq-result-btn{background:linear-gradient(135deg,var(--green-m),var(--green-d));color:white;border:none;border-radius:99px;padding:13px 26px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
+
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-item summary{padding:16px 4px;font-size:14px;font-weight:500;color:var(--text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:'+';font-size:20px;color:var(--green-m);font-weight:300;flex-shrink:0;margin-left:12px;}
+.faq-item[open] summary::after{content:'−';}
+.faq-item p{padding:0 4px 16px;font-size:13.5px;color:var(--text-m);line-height:1.7;font-weight:300;}
 .btn-gen{background:linear-gradient(135deg,var(--green-m),var(--green-d));color:white;border:none;border-radius:99px;padding:12px 24px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;width:100%;margin-top:8px;}
 .btn-gen:hover{transform:translateY(-1px);}
 .btn-submit{background:linear-gradient(135deg,var(--green-m),var(--green-d));color:white;border:none;border-radius:99px;padding:16px 32px;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(45,90,39,.28);transition:all .2s;width:100%;margin-top:8px;opacity:.4;cursor:not-allowed;}
@@ -207,6 +230,53 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);}
   <h1 class="intro-title">Dein <em>Darmkur-Kompass.</em></h1>
   <div class="intro-rule"></div>
   <p class="intro-sub">Kurz erklärt, ehrlich aufgebaut. Ich zeig dir wie die Kur funktioniert, was du brauchst, welches Paket zu dir passt, und optional kann ich dich auch persönlich dabei begleiten, siehe am Ende der Anleitung.</p>
+
+  <div style="background:var(--green-soft);border-radius:18px;padding:20px 22px;margin-top:20px;text-align:left;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green-d);margin-bottom:10px;">🌿 Was die Kur bei mir persönlich verändert hat</div>
+    <p style="font-size:13.5px;color:var(--text-m);line-height:1.75;font-weight:300;">
+      Bei mir hat sich einiges getan, seit ich regelmäßig kure. Am deutlichsten spür ich es bei meinen Lipödem-Schmerzen, das erzähl ich auch in meinem Video. Aber nicht nur da: meine Migräne ist seltener und schwächer geworden, und auch bei Verdauungsproblemen wie Blähungen und Unregelmäßigkeit hat sich für mich viel verbessert.
+    </p>
+    <p style="font-size:12px;color:var(--text-l);line-height:1.6;margin-top:10px;">
+      Das ist meine persönliche Erfahrung, kein Heilsversprechen. Jeder Körper reagiert anders, und das ersetzt keine ärztliche Abklärung bei bestehenden Beschwerden.
+    </p>
+  </div>
+
+  <div class="mini-quiz">
+    <div class="mini-quiz-title">Passt die Darmkur zu dir?</div>
+    <div class="mini-quiz-sub">3 kurze Fragen, 20 Sekunden</div>
+
+    <div class="mq-progress">
+      <div class="mq-dot" id="mqDot0"></div>
+      <div class="mq-dot" id="mqDot1"></div>
+      <div class="mq-dot" id="mqDot2"></div>
+    </div>
+
+    <div class="mq-question active" id="mqQ0">
+      <div class="mq-question-text">Fühlst du dich öfter aufgebläht oder unwohl nach dem Essen?</div>
+      <button class="mq-opt" onclick="mqAnswer(2)">Ja, öfter</button>
+      <button class="mq-opt" onclick="mqAnswer(1)">Manchmal</button>
+      <button class="mq-opt" onclick="mqAnswer(0)">Eigentlich nicht</button>
+    </div>
+
+    <div class="mq-question" id="mqQ1">
+      <div class="mq-question-text">Ist dein Energielevel öfter im Keller, ohne dass du genau weißt warum?</div>
+      <button class="mq-opt" onclick="mqAnswer(2)">Ja, ziemlich oft</button>
+      <button class="mq-opt" onclick="mqAnswer(1)">Ab und zu</button>
+      <button class="mq-opt" onclick="mqAnswer(0)">Eher nicht</button>
+    </div>
+
+    <div class="mq-question" id="mqQ2">
+      <div class="mq-question-text">Warst du schon mal neugierig, wie sich eine Darmkur für dich anfühlen könnte?</div>
+      <button class="mq-opt" onclick="mqAnswer(2)">Ja, total</button>
+      <button class="mq-opt" onclick="mqAnswer(1)">Vielleicht</button>
+      <button class="mq-opt" onclick="mqAnswer(0)">Bin skeptisch</button>
+    </div>
+
+    <div class="mq-result" id="mqResult">
+      <p class="mq-result-text" id="mqResultText"></p>
+      <button class="mq-result-btn" onclick="go('s1')">Meine Pakete ansehen →</button>
+    </div>
+  </div>
   <div style="text-align:center;margin-top:14px;">
     <button onclick="go('s3')" style="background:var(--green-soft);border:1.5px solid var(--green-l);color:var(--green-d);border-radius:99px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;">
       🍽️ Direkt zu den Rezepten springen
@@ -362,6 +432,38 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);}
   </div>
 
   <div class="disclaimer">⚠️ Alle Inhalte basieren auf meiner persönlichen Erfahrung und ersetzen keine ärztliche Beratung. Bei Erkrankungen, Schwangerschaft oder Medikamenten bitte zuerst mit einer Ärztin sprechen.</div>
+
+  <h2 class="sec-title" style="margin-top:32px;">Häufige <em>Fragen</em></h2>
+
+  <details class="faq-item">
+    <summary>Merke ich sofort etwas?</summary>
+    <p>Das ist bei jedem unterschiedlich. Manche spüren schon in der ersten Woche mehr Leichtigkeit, bei anderen dauert es etwas länger. Gib der Kur ein paar Wochen Zeit, der Darm braucht Geduld.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Bekomm ich Nebenwirkungen oder wird mir schlecht?</summary>
+    <p>Das Pack C wird bewusst langsam eingeschlichen, die ersten Tage nur ein halbes Sachet, genau damit sich dein Darm daran gewöhnen kann. Manche spüren am Anfang etwas mehr Blähungen, das legt sich normalerweise schnell wieder.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Kann ich das neben Alltag und Arbeit machen?</summary>
+    <p>Ja, absolut. Die Kur läuft im Hintergrund mit, sie kostet dich täglich nur ein paar Minuten. Kein spezieller Rückzug oder Urlaub nötig.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Muss ich meine Ernährung komplett umstellen?</summary>
+    <p>Nein. Ein paar Anpassungen helfen der Kur, aber du musst nicht dein ganzes Essen auf den Kopf stellen. Im Darmkur-Programm bekommst du dazu einen eigenen Ernährungsplan mit.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Ist das auch in Schwangerschaft oder Stillzeit okay?</summary>
+    <p>Das kann ich dir nicht pauschal beantworten, das besprich bitte vorher mit deiner Ärztin oder Hebamme.</p>
+  </details>
+
+  <details class="faq-item">
+    <summary>Wie schnell kommen die Produkte bei mir an?</summary>
+    <p>Das hängt von Ringana ab, in der Regel innerhalb weniger Werktage nach deiner Bestellung.</p>
+  </details>
 
   <div class="nav"><div></div><button class="btn-next ready" onclick="go('s1')">Paket wählen →</button></div>
 </div>
@@ -745,6 +847,34 @@ function go(id){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Mini-Quiz "Passt die Darmkur zu mir?" ────────────────────────────────────
+var mqStep = 0;
+var mqScore = 0;
+var MQ_RESULTS = [
+  { max: 1, text: "Klingt, als läuft bei dir vieles schon rund, aber auch dann kann eine Kur dir noch mehr Leichtigkeit bringen. Schau dir gern an, was dazu passt." },
+  { max: 3, text: "Da ist einiges dabei, das eine Kur für dich verändern könnte. Genau für solche Situationen hab ich sie selbst angefangen." },
+  { max: 4, text: "Das klingt ziemlich genau nach dem, wo ich selbst gestartet bin. Ich glaub, die Kur könnte dir richtig guttun." }
+];
+function mqUpdateProgress(){
+  for(var i=0;i<3;i++){
+    document.getElementById('mqDot'+i).classList.toggle('on', i < mqStep);
+  }
+}
+mqUpdateProgress();
+function mqAnswer(points){
+  mqScore += points;
+  document.getElementById('mqQ'+mqStep).classList.remove('active');
+  mqStep++;
+  mqUpdateProgress();
+  if(mqStep < 3){
+    document.getElementById('mqQ'+mqStep).classList.add('active');
+  } else {
+    var result = MQ_RESULTS.find(function(r){ return mqScore <= r.max; }) || MQ_RESULTS[MQ_RESULTS.length-1];
+    document.getElementById('mqResultText').textContent = result.text;
+    document.getElementById('mqResult').classList.add('active');
+  }
 }
 
 // ── Paket selection (multi-select) ───────────────────────────────────────────
