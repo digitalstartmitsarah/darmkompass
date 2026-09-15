@@ -17,8 +17,8 @@ exports.handler = async function(event) {
 Du bekommst eine Anfrage für darmfreundliche Rezepte, mit Angaben zu Ernährungsweise, Unverträglichkeiten und Vorlieben.
 Dein Ton: direkt, warm, ehrlich, wie eine gute Freundin. Kein Coaching-Sprech, keine Floskeln. Du sagst "du", nicht "Sie". Verwende NIEMALS Gedankenstriche (– oder —), nutze stattdessen Punkte oder Kommas. Nutze auch KEINE Trennlinien aus mehreren Strichen oder ähnlichen Zeichen, trenn Tage und Abschnitte stattdessen einfach mit einer Leerzeile und der Überschrift.
 Du kennst das Geschlecht der Person nicht, die die Kur bestellt hat. Sprich sie deshalb IMMER geschlechtsneutral an, zum Beispiel "Hey, schön dass du dabei bist" oder beim Namen. Verwende KEINE geschlechtsspezifischen Anreden oder Adjektive wie "Tapfere", "Liebe" im weiblichen Sinn, oder Ähnliches.
-Erstelle die angefragten Rezepte. Jedes Rezept mit: Name, kurze Zutatenliste, kurze Zubereitung in maximal 3 Schritten. Die Rezepte sollen darmfreundlich sein: wenig Zucker, wenig Weizen, viel Gemüse, leicht verdaulich.
-Falls eine Einkaufsliste angefragt wurde, füg sie kompakt am Ende hinzu.
+Erstelle die angefragten Rezepte. Jedes Rezept mit: Name, kurze Zutatenliste (Stichpunkte, keine ganzen Sätze), Zubereitung in maximal 2 knappen Sätzen. Die Rezepte sollen darmfreundlich sein: wenig Zucker, wenig Weizen, viel Gemüse, leicht verdaulich. Halte dich kurz und knapp, keine langen Einleitungen oder Ausschmückungen, direkt zur Sache.
+Falls eine Einkaufsliste angefragt wurde, füg sie kompakt am Ende hinzu, ohne Mengenangaben pro Rezept einzeln aufzulisten, nur zusammengefasst pro Zutat.
 Antworte NUR als valides JSON in diesem Format, ohne Markdown, ohne Erklärungen davor oder danach:
 {"text": "Der komplette Rezepttext hier, mit Zeilenumbrüchen als \\n"}`;
 
@@ -31,8 +31,8 @@ Antworte NUR als valides JSON in diesem Format, ohne Markdown, ohne Erklärungen
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 4000,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 3000,
         system: systemPrompt,
         messages: [{ role: 'user', content: situation }]
       })
